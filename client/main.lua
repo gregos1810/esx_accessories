@@ -1,10 +1,10 @@
 local Keys = {
-    ["ESC"] = 322, ["F1"] = 288, ["F2"] = 289, ["F3"] = 170, ["F5"] = 166, ["F6"] = 167, ["F7"] = 168, ["F8"] = 169, ["F9"] = 56, ["F10"] = 57, 
-    ["~"] = 243, ["1"] = 157, ["2"] = 158, ["3"] = 160, ["4"] = 164, ["5"] = 165, ["6"] = 159, ["7"] = 161, ["8"] = 162, ["9"] = 163, ["-"] = 84, ["="] = 83, ["BACKSPACE"] = 177, 
+    ["ESC"] = 322, ["F1"] = 288, ["F2"] = 289, ["F3"] = 170, ["F5"] = 166, ["F6"] = 167, ["F7"] = 168, ["F8"] = 169, ["F9"] = 56, ["F10"] = 57,
+    ["~"] = 243, ["1"] = 157, ["2"] = 158, ["3"] = 160, ["4"] = 164, ["5"] = 165, ["6"] = 159, ["7"] = 161, ["8"] = 162, ["9"] = 163, ["-"] = 84, ["="] = 83, ["BACKSPACE"] = 177,
     ["TAB"] = 37, ["Q"] = 44, ["W"] = 32, ["E"] = 38, ["R"] = 45, ["T"] = 245, ["Y"] = 246, ["U"] = 303, ["P"] = 199, ["["] = 39, ["]"] = 40, ["ENTER"] = 18,
     ["CAPS"] = 137, ["A"] = 34, ["S"] = 8, ["D"] = 9, ["F"] = 23, ["G"] = 47, ["H"] = 74, ["K"] = 311, ["L"] = 182,
     ["LEFTSHIFT"] = 21, ["Z"] = 20, ["X"] = 73, ["C"] = 26, ["V"] = 0, ["B"] = 29, ["N"] = 249, ["M"] = 244, [","] = 82, ["."] = 81,
-    ["LEFTCTRL"] = 36, ["LEFTALT"] = 19, ["SPACE"] = 22, ["RIGHTCTRL"] = 70, 
+    ["LEFTCTRL"] = 36, ["LEFTALT"] = 19, ["SPACE"] = 22, ["RIGHTCTRL"] = 70,
     ["HOME"] = 213, ["PAGEUP"] = 10, ["PAGEDOWN"] = 11, ["DELETE"] = 178,
     ["LEFT"] = 174, ["RIGHT"] = 175, ["TOP"] = 27, ["DOWN"] = 173,
     ["NENTER"] = 201, ["N4"] = 108, ["N5"] = 60, ["N6"] = 107, ["N+"] = 96, ["N-"] = 97, ["N7"] = 117, ["N8"] = 61, ["N9"] = 118
@@ -51,15 +51,15 @@ function OpenAccessoryMenu()
 end
 
 function SetUnsetAccessory(accessory)
-    
+
     ESX.TriggerServerCallback('esx_accessories:get', function(hasAccessory, accessorySkin)
         local _accessory = string.lower(accessory)
 
         if hasAccessory then
             TriggerEvent('skinchanger:getSkin', function(skin)
                 local mAccessory = -1
-                local mColor = 0      
-                if _accessory == "mask" then
+                local mColor = 0
+                if _accessory == "mask" or _accessory == "glasses" then
                     mAccessory = 0
                 end
                 if skin[_accessory .. '_1'] == mAccessory then
@@ -76,7 +76,7 @@ function SetUnsetAccessory(accessory)
         end
 
     end, accessory)
-    
+
 end
 
 function OpenShopMenu(accessory)
@@ -85,7 +85,7 @@ function OpenShopMenu(accessory)
     local restrict = {}
 
     restrict = { _accessory .. '_1', _accessory .. '_2' }
-    
+
     TriggerEvent('esx_skin:openRestrictedMenu', function(data, menu)
 
         menu.close()
@@ -146,7 +146,7 @@ function OpenShopMenu(accessory)
             end
         )
 
-    end, 
+    end,
     function(data, menu)
         menu.close()
         CurrentAction     = 'shop_menu'
@@ -224,9 +224,9 @@ end)
 
 Citizen.CreateThread(function()
     while true do
-        
+
         Wait(0)
-        
+
         local coords      = GetEntityCoords(GetPlayerPed(-1))
         local isInMarker  = false
         local currentZone = nil
@@ -272,7 +272,7 @@ Citizen.CreateThread(function()
         end
 
         if Config.EnableControls then
-            if IsControlJustReleased(0, Keys['K']) and not IsDead then
+            if IsControlJustReleased(0, Keys[',']) and not IsDead then
                 OpenAccessoryMenu()
             end
         end
